@@ -1,1 +1,51 @@
 
+const PREFIX = "!";
+
+const CONFIG = {
+  roomName: "VEXOR | HAXBALL",
+  maxPlayers: 16,
+  public: true,
+  noPlayer: false,
+  playerName: "VEXOR"
+};
+
+let room;
+
+function startVexor() {
+  room = HBInit(CONFIG);
+
+  room.setDefaultStadium("Classic");
+  room.setScoreLimit(5);
+  room.setTimeLimit(3);
+
+  room.onPlayerJoin = (player) => {
+    room.sendChat(`⚽ ¡Bienvenido ${player.name}! Soy VEXOR.`);
+    room.sendChat(`Escribí ${PREFIX}help para ver los comandos.`);
+  };
+
+  room.onPlayerChat = (player, message) => {
+    if (!message.startsWith(PREFIX)) return;
+
+    const command = message.slice(1).trim().toLowerCase();
+
+    if (command === "help") {
+      room.sendChat("VEXOR | Comandos: !help, !players, !stats");
+    }
+
+    if (command === "players") {
+      const players = room.getPlayerList();
+      room.sendChat(`Jugadores conectados: ${players.length}`);
+    }
+
+    if (command === "stats") {
+      room.sendChat(`¡Hola ${player.name}! Las estadísticas llegarán pronto.`);
+    }
+  };
+
+  room.sendChat("VEXOR está online. ¡A jugar!");
+}
+
+if (typeof HBInit !== "undefined") {
+  startVexor();
+}
+
